@@ -1,0 +1,30 @@
+<template>
+	<lightning-card title="QuickLead">
+		<div class="slds-m-around_medium">
+				<p>Quick Lead Form</p>
+				<div class="slds-grid slds-wrap">
+					<div class="slds-col slds-size_6-of-12">
+						<lightning-input type="text" required label="First Name" id="firstName" value={firstName} onblur={inputOnBlur}></lightning-input>
+					</div>
+					<div class="slds-col slds-size_6-of-12">
+						<lightning-input type="text" required label="Last Name" id="lastName" value={lastName} onblur={inputOnBlur}></lightning-input>
+					</div>
+					<div class="slds-col slds-size_6-of-12">
+						<lightning-input type="text" required label="Company" id="company" value={company} onblur={inputOnBlur}></lightning-input>
+					</div>
+					<div class="slds-col slds-size_6-of-12">
+						<lightning-input type="email" label="Email" id="email" value={email} onblur={inputOnBlur}></lightning-input>
+					</div>
+					<div class="slds-col slds-size_6-of-12">
+						<lightning-input type="phone" label="Phone" id="phone" value={phone} onblur={inputOnBlur}></lightning-input>
+					</div>
+					<div class="slds-col slds-size_12-of-12 saveButton">
+						<lightning-button label="Save Lead" onclick={saveLead}></lightning-button>
+					</div>
+				</div>
+		</div>
+	</lightning-card>
+	<template if:true={working}>
+		<lightning-spinner alternative-text="Loading"></lightning-spinner>
+	</template>
+</template>
