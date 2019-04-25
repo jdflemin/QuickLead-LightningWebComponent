@@ -1,8 +1,9 @@
 @isTest
 private class QuickLeadTest {
     
+		// success inserting one lead
 		@IsTest
-		static void methodName(){
+		static void successLeadInsert(){
 			System.Test.startTest();
 				QuickLead.addQuickLead('firstName', 'lastName', 'company', 'email@email.com', '');
 			System.Test.stopTest();

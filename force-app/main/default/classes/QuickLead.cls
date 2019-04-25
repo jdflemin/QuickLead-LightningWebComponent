@@ -1,8 +1,18 @@
 public with sharing class QuickLead {
 
+	/*
+	* @description maps user input into a lead object and inserts/returns the lead
+	* @method addQuickLead
+	* @param {String} firstName 
+	* @param {String} lastName
+	* @param {String} company
+	* @param {String} email
+	* @param {String} phone
+	* @return {Lead} newLead
+	*
+	*/
 	@AuraEnabled
 	public static Lead addQuickLead(String firstName, String lastName, String company, String email, String phone) {
-		System.debug('here');
 		Lead newLead = new Lead(
 			FirstName = firstName,
 			LastName = lastName,
