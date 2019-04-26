@@ -1,6 +1,7 @@
 // imports
 import { LightningElement, track } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+// apex method
 import addQuickLead from '@salesforce/apex/QuickLead.addQuickLead'
 
 export default class QuickLead extends LightningElement {
@@ -36,7 +37,7 @@ export default class QuickLead extends LightningElement {
 	async saveLead() {
 		this.working = true;
 		let valid = this.validateInputs();
-		if(valid) {
+		if (valid) {
 			addQuickLead({ 	firstName: this.firstName, 
 											lastName: this.lastName,
 											company: this.company,
