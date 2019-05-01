@@ -1,7 +1,6 @@
 <template>
 	<lightning-card title="QuickLead">
 		<div class="slds-m-around_medium">
-				<lightning-record-edit-form object-api-name="Lead">
 			<p>Quick Lead Form</p>
 				<div class="slds-grid slds-wrap">
 					<div class="slds-col slds-size_6-of-12">
@@ -23,7 +22,6 @@
 						<lightning-button label="Save Lead" onclick={createLead}></lightning-button>
 					</div>
 				</div>
-			</lightning-record-edit-form>
 			</div>
 	</lightning-card>
 	<template if:true={working}>
