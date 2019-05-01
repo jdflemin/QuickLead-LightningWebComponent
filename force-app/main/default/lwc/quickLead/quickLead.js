@@ -1,58 +1,82 @@
 // imports
 import { LightningElement, track } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-// apex method
-import addQuickLead from '@salesforce/apex/QuickLead.addQuickLead'
+
+// built in method for inserting records 
+import { createRecord } from 'lightning/uiRecordApi';
+// Lead imports
+import LEAD_OBJECT from '@salesforce/schema/Lead';
+import LEAD_FIRST_NAME from '@salesforce/schema/Lead.FirstName';
+import LEAD_LAST_NAME from '@salesforce/schema/Lead.LastName';
+import LEAD_COMPANY from '@salesforce/schema/Lead.Company';
+import LEAD_PHONE from '@salesforce/schema/Lead.Phone';
+import LEAD_EMAIL from '@salesforce/schema/Lead.Email';
 
 export default class QuickLead extends LightningElement {
 	// variables we use on page and in js
-	@track firstName = '';
-	@track lastName = '';
-	@track company = '';
-	@track email = '';
-	@track phone = '';
+	@track firstName;
+	@track lastName;
+	@track company;
+	@track email;
+	@track phone;
 	@track working = false;
+
+	/**
+	 * @description call the constructor to setup the inputs
+	 * @method constructor
+	 */
+	constructor() {
+		super();
+		this.setInputs();
+		let self = this;
+		this.template.addEventListener('keydown', function(event) {
+			if(event.key === 'Enter'){
+				self.createLead();
+			} 
+		}, true);
+	}
+
+	/**
+	 * @description creates the new lead from the input fields
+	 * @method createLead
+	 */
+	createLead() {
+		this.working = true;
+		const fields = {};		
+		let valid = this.validateInputs();
+		if (valid) {
+			fields[LEAD_FIRST_NAME.fieldApiName] = this.firstName;
+			fields[LEAD_LAST_NAME.fieldApiName] = this.lastName;
+			fields[LEAD_COMPANY.fieldApiName] = this.company;
+			fields[LEAD_PHONE.fieldApiName] = this.phone;
+			fields[LEAD_EMAIL.fieldApiName] = this.email;
+			const recordInput = { apiName: LEAD_OBJECT.objectApiName, fields };	
+			createRecord(recordInput)
+			.then(res => {
+				this.messageHandler(false, 'Success', `${res.fields.FirstName.value} ${res.fields.LastName.value} was successfully created`);
+			})
+			.catch(err => {
+				this.messageHandler(true, 'Error', err.body.message);
+			});
+		}
+	
+	}
 	
 	/**
 	 * @description onblur event calls this method and updates variables
 	 * @method inputOnBlur
 	 * @param {Object} event 
 	 */
-	inputOnBlur(event) {
-		let currentId = event.target.id;
+	inputOnChange(event) {
+		let currentName = event.target.name;
 		let currentValue = event.target.value;
 
-		if (currentId.includes('firstName-')) this.firstName = currentValue;
-		else if (currentId.includes('lastName-')) this.lastName = currentValue;
-		else if (currentId.includes('company-')) this.company = currentValue;
-		else if (currentId.includes('email-')) this.email = currentValue;
-		else if (currentId.includes('phone-')) this.phone = currentValue;
+		if (currentName === 'firstName') this.firstName = currentValue;
+		else if (currentName === 'lastName') this.lastName = currentValue;
+		else if (currentName === 'company') this.company = currentValue;
+		else if (currentName === 'email') this.email = currentValue;
+		else if (currentName === 'phone')  this.phone = currentValue;
 		else this.messageHandler(true, 'Error', 'Unknown error, refresh and try again.')		
-	}
-
-	/**
-	 * @description saves the quick lead info
-	 * @method saveLead
-	 */
-	async saveLead() {
-		this.working = true;
-		let valid = this.validateInputs();
-		if (valid) {
-			addQuickLead({ 	firstName: this.firstName, 
-											lastName: this.lastName,
-											company: this.company,
-											email: this.email,
-											phone: this.phone 
-										})
-			.then(res => {
-				console.log(res);
-				this.messageHandler(false, 'Success', `${res}`);
-			})
-			.catch(err => {
-				console.log(err.getResponse()); 
-				this.messageHandler(true, 'Error', err.toString());
-			});
-		}
 	}
 
 	/**
@@ -77,13 +101,26 @@ export default class QuickLead extends LightningElement {
 	 * @param {String} details 
 	 */
 	messageHandler(error, header, details) {
+		if (!error) this.setInputs();
 		const message = new ShowToastEvent({
 										title: header,
 										message: details,
 										variant: error ? 'error' : 'success',
-										mode: 'dismissable'
+										mode: 'sticky'
 								});
 		this.dispatchEvent(message);
 		this.working = false;
+	}
+
+	/**
+	 * @description sets inputs to blank strings
+	 * @method setInputs
+	 */
+	setInputs() {
+		this.firstName = '';
+		this.lastName = '';
+		this.company = '';
+		this.email = '';
+		this.phone = '';
 	}
 }
