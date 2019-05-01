@@ -30,9 +30,7 @@ export default class QuickLead extends LightningElement {
 		this.setInputs();
 		let self = this;
 		this.template.addEventListener('keydown', function(event) {
-			if(event.key === 'Enter'){
-				self.createLead();
-			} 
+			if (event.key === 'Enter') self.createLead();
 		}, true);
 	}
 
