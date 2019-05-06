@@ -1,7 +1,6 @@
 // imports
 import { LightningElement, track } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-
 // built in method for inserting records 
 import { createRecord } from 'lightning/uiRecordApi';
 // Lead imports
@@ -37,8 +36,10 @@ export default class QuickLead extends LightningElement {
 	/**
 	 * @description creates the new lead from the input fields
 	 * @method createLead
+	 * @param {Object} event
 	 */
-	createLead() {
+	createLead(event) {
+		event.preventDefault();
 		this.working = true;
 		const fields = {};		
 		let valid = this.validateInputs();
@@ -54,10 +55,10 @@ export default class QuickLead extends LightningElement {
 				this.messageHandler(false, 'Success', `${res.fields.FirstName.value} ${res.fields.LastName.value} was successfully created`);
 			})
 			.catch(err => {
+				console.log(err);
 				this.messageHandler(true, 'Error', err.body.message);
 			});
 		}
-	
 	}
 	
 	/**

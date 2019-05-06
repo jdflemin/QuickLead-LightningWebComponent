@@ -2,7 +2,8 @@
 	<lightning-card title="QuickLead">
 		<div class="slds-m-around_medium">
 			<p>Quick Lead Form</p>
-				<div class="slds-grid slds-wrap">
+			<!-- <form>	 -->
+			<div class="slds-grid slds-wrap">
 					<div class="slds-col slds-size_6-of-12">
 						<lightning-input field-name="FirstName" type="text" label="First Name" name="firstName" value={firstName} onchange={inputOnChange}></lightning-input>
 					</div>
@@ -19,13 +20,14 @@
 						<lightning-input field-name="Phone" type="phone" label="Phone" name="phone" value={phone} onchange={inputOnChange}></lightning-input>
 					</div>
 					<div class="slds-col slds-size_12-of-12 saveButton">
+						<!-- <lightning-button type="submit" label="Save Lead" onclick={createLead}></lightning-button> -->
 						<lightning-button label="Save Lead" onclick={createLead}></lightning-button>
 					</div>
 				</div>
+			<!-- </form> -->
 			</div>
 	</lightning-card>
 	<template if:true={working}>
 		<lightning-spinner alternative-text="Loading"></lightning-spinner>
 	</template>
-
 </template>
